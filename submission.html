@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exam Submission</title>
+<style>
+  body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+  }
+  .submission-container {
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  }
+  .submission-container h1 {
+    color: #4CAF50;
+    margin-bottom: 20px;
+  }
+  .submission-container p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: #333;
+  }
+  .submission-container button {
+    padding: 12px 25px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: #1e1e1e;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .submission-container button:hover {
+    background-color: #444;
+  }
+</style>
+</head>
+<body>
+
+<div class="submission-container">
+  <h1>✔ Exam Submitted!</h1>
+  <p>Your exam has been completed and submitted successfully.</p>
+  <button onclick="goHome()">Go to Dashboard</button>
+</div>
+
+<script>
+function goHome() {
+  window.location.href = "student.html";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Dashboard - Exam Management System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg-dark: #1e1e1e;
+      --sidebar-bg: #2a2a2a;
+      --text-light: #f5f5f5;
+      --card-bg: #ffffff;
+      --active-btn: #4caf50;   /* green */
+      --upcoming-btn: #2196f3; /* blue */
+      --results-btn: #9c27b0;  /* purple */
+      --sidebar-width: 250px;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background-color: #f4f4f4;
+      color: var(--text-light);
+      overflow-x: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      align-items: center;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      padding: 10px 20px;
+      position: relative;
+      z-index: 1000;
+    }
+
+    .hamburger {
+      cursor: pointer;
+      font-size: 24px;
+      margin-right: 15px;
+      user-select: none;
+    }
+
+    .navbar-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      height: 100%;
+      width: var(--sidebar-width);
+      background-color: var(--sidebar-bg);
+      color: var(--text-light);
+      transition: left 0.3s ease;
+      padding: 20px;
+      padding-top: 80px;
+      box-sizing: border-box;
+      z-index: 999;
+    }
+
+    .sidebar.open {
+      left: 0;
+    }
+
+    .sidebar img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: block;
+      margin: 0 auto 15px;
+      border: 3px solid white;
+    }
+
+    .sidebar .student-name,
+    .sidebar .student-contact {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    /* Main Content */
+    .main-content {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      min-height: calc(100vh - 60px);
+      padding: 30px;
+      gap: 30px;
+      transition: margin-left 0.3s ease;
+    }
+
+    /* Shift content when sidebar opens */
+    body.sidebar-open .main-content {
+      margin-left: var(--sidebar-width);
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      color: #333;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      width: 300px;
+      text-align: center;
+      padding: 25px 20px;
+      border-radius: 12px;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      font-size: 22px;
+      color: #111;
+    }
+
+    .card p {
+      font-size: 14px;
+      margin: 10px 0 20px;
+      color: #555;
+    }
+
+    .card button {
+      border: none;
+      padding: 10px 15px;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: white;
+      transition: opacity 0.2s;
+    }
+
+    .card button:hover {
+      opacity: 0.85;
+    }
+
+    /* Unified button color - Black for all */
+  .btn-active,
+  .btn-upcoming,
+  .btn-results {
+    background-color: var(--bg-dark);
+    color: white;
+  }
+
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .main-content {
+        flex-direction: column;
+        align-items: center;
+      }
+      .card {
+        width: 90%;
+      }
+      body.sidebar-open .main-content {
+        margin-left: 0; /* no shift on very small screens */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="hamburger" onclick="toggleSidebar()">&#9776;</div>
+    <div class="navbar-title">Student Dashboard</div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <img src="images/student.jpg" alt="Student Photo">
+    <div class="student-name">John Doe</div>
+    <div class="student-contact">Email: john.doe@example.com</div>
+    <div class="student-contact">Phone: +91 9876543210</div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="card">
+      <h3>Active Exams</h3>
+      <p>Click below to find all the active exams available for you.</p>
+      <button class="btn-active" onclick="goTo('active_exam.html')">View Active</button>
+    </div>
+
+    <div class="card">
+      <h3>Upcoming Exams</h3>
+      <p>Check upcoming exam schedules and get ready beforehand.</p>
+      <button class="btn-upcoming" onclick="goTo('upcoming_exams.html')">View Upcoming</button>
+    </div>
+
+    <div class="card">
+      <h3>Results</h3>
+      <p>Access your exam results and performance reports.</p>
+      <button class="btn-results" onclick="goTo('results.html')">View Results</button>
+    </div>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('open');
+      document.body.classList.toggle('sidebar-open');
+    }
+
+    function goTo(page) {
+      window.location.href = page;
+    }
+  </script>
+
+</body>
+</html>
