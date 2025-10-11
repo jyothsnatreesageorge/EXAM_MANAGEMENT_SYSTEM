@@ -6,60 +6,21 @@
   <title>Add Questions</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #e8eef3;
-      min-height: 100vh;
-    }
-    .navbar {
-      background: linear-gradient(90deg, #34495e 0%, #2c3e50 100%);
-      color: white;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
-    .navbar h4 {
-      color: white !important;
-      font-weight: 600;
-    }
-    .btn-light {
-      color: #ecf0f1;
-      background-color: #5d6d7e;
-      border-color: #5d6d7e;
-    }
-    .btn-light:hover {
-      color: #fff;
-      background-color: #798d9f;
-      border-color: #798d9f;
-    }
-    .card {
-      border-radius: 15px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-      border: none;
-      margin-bottom: 20px;
-    }
-    .btn-primary {
-      background-color: #3498db;
-      border-color: #3498db;
-      font-weight: 600;
-      padding: 10px 30px;
-      border-radius: 8px;
-    }
-    .btn-primary:hover {
-      background-color: #2980b9;
-      border-color: #2980b9;
-    }
-    .form-control, .form-label, .form-select {
-        font-size: 14px;
-    }
-    .question-box {
-        border: 1px solid #ccc;
-        padding: 20px;
-        border-radius: 10px;
-        margin-top: 15px;
-        background-color: #fcfdff;
-    }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #e8eef3; min-height: 100vh; }
+    .navbar { background: linear-gradient(90deg, #34495e 0%, #2c3e50 100%); color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+    .navbar h4 { color: white !important; font-weight: 600; }
+    .btn-light { color: #ecf0f1; background-color: #5d6d7e; border-color: #5d6d7e; }
+    .btn-light:hover { color: #fff; background-color: #798d9f; border-color: #798d9f; }
+    .card { border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); border: none; margin-bottom: 20px; }
+    .btn-primary { background-color: #3498db; border-color: #3498db; font-weight: 600; padding: 10px 30px; border-radius: 8px; }
+    .btn-primary:hover { background-color: #2980b9; border-color: #2980b9; }
+    .btn-outline-secondary { font-weight: 600; padding: 10px 20px; border-radius: 8px; }
+    .form-control, .form-label, .form-select { font-size: 14px; }
+    .question-box { border: 1px solid #ccc; padding: 20px; border-radius: 10px; margin-top: 15px; background-color: #fcfdff; }
   </style>
 </head>
 <body>
+
   <nav class="navbar shadow-sm mb-4">
     <div class="container-fluid">
       <h4 class="m-0">Add Questions</h4>
@@ -70,7 +31,7 @@
   <div class="container mt-5">
     <div class="card p-4 shadow-sm">
       <h5>Add Multiple Choice Questions (MCQs)</h5>
-      <p>Exam: *[Exam Title will appear here]* | Subject: *[Subject will appear here]*</p>
+      <p>Exam: <span id="examTitle"></span> | Subject: <span id="subjectName"></span></p>
       
       <div id="question-form-container">
         <div class="question-box" id="question-template">
@@ -109,70 +70,95 @@
               <option value="D">D</option>
             </select>
           </div>
-          
         </div>
       </div>
-      <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-        <button class="btn btn-outline-secondary" onclick="addQuestion()">Add Another Question</button>
-        
-        <button type="submit" class="btn btn-primary" onclick="saveAndFinish()">Save All Questions & Finish</button>
-      </div>
 
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+        <button type="button" class="btn btn-outline-secondary" onclick="addQuestion()" id="addQuestionBtn">Add Another Question</button>
+        <button type="button" class="btn btn-primary" onclick="saveAndFinish()">Save All Questions & Finish</button>
+      </div>
     </div>
   </div>
 
 <script>
-    let questionCount = 1;
+let questionCount = 1;
 
-    // Function to add a new question form
-    function addQuestion() {
-        questionCount++;
-        const container = document.getElementById('question-form-container');
-        const template = document.getElementById('question-template');
-        
-        // 1. Clone the template element
-        const newQuestionBox = template.cloneNode(true);
-        newQuestionBox.id = ''; // Remove the ID from the clone
+// Read URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+const totalQuestions = parseInt(urlParams.get('total_questions')) || 1;
+const examTitle = urlParams.get('exam_title');
+const subject = urlParams.get('subject');
 
-        // 2. Update the Question Number header
-        const header = newQuestionBox.querySelector('[data-question-number]');
-        header.innerText = `Question ${questionCount}`;
-        header.setAttribute('data-question-number', questionCount);
+document.getElementById('examTitle').innerText = examTitle;
+document.getElementById('subjectName').innerText = subject;
 
-        // 3. Update 'name' attributes for all inputs/selects to ensure uniqueness
-        const inputs = newQuestionBox.querySelectorAll('textarea, input, select');
-        inputs.forEach(input => {
-            const oldName = input.name;
-            if (oldName) {
-                // Example: q1_text becomes q2_text
-                const newName = oldName.replace(`q${questionCount - 1}`, `q${questionCount}`);
-                input.name = newName;
-            }
-            // Clear any previous values from the cloned form
-            if (input.tagName === 'SELECT') {
-                input.value = ''; // Reset select to the first option
-            } else {
-                input.value = ''; // Clear text inputs/textareas
-            }
+function addQuestion() {
+    if (questionCount >= totalQuestions) {
+        alert(`You can only add ${totalQuestions} questions.`);
+        return;
+    }
+
+    questionCount++;
+    const container = document.getElementById('question-form-container');
+    const template = document.getElementById('question-template');
+    const newQuestionBox = template.cloneNode(true);
+    newQuestionBox.id = '';
+
+    const header = newQuestionBox.querySelector('[data-question-number]');
+    header.innerText = `Question ${questionCount}`;
+    header.setAttribute('data-question-number', questionCount);
+
+    const inputs = newQuestionBox.querySelectorAll('textarea, input, select');
+    inputs.forEach(input => {
+        const oldName = input.name;
+        if (oldName) input.name = oldName.replace(`q${questionCount - 1}`, `q${questionCount}`);
+        if (input.tagName === 'SELECT') input.value = '';
+        else input.value = '';
+    });
+
+    container.appendChild(newQuestionBox);
+    newQuestionBox.scrollIntoView({ behavior: 'smooth' });
+
+    // Disable add button if limit reached
+    if (questionCount >= totalQuestions) document.getElementById('addQuestionBtn').disabled = true;
+}
+
+function saveAndFinish() {
+    const questions = [];
+    for (let i = 1; i <= questionCount; i++) {
+        const qText = document.querySelector(`[name="q${i}_text"]`).value.trim();
+        const optA = document.querySelector(`[name="q${i}_opt_a"]`).value.trim();
+        const optB = document.querySelector(`[name="q${i}_opt_b"]`).value.trim();
+        const optC = document.querySelector(`[name="q${i}_opt_c"]`).value.trim();
+        const optD = document.querySelector(`[name="q${i}_opt_d"]`).value.trim();
+        const correct = document.querySelector(`[name="q${i}_correct_answer"]`).value;
+
+        if (!qText || !optA || !optB || !optC || !optD || !correct) {
+            alert(`Please fill in all fields for Question ${i}`);
+            return;
+        }
+
+        questions.push({
+            question_text: qText,
+            option_a: optA,
+            option_b: optB,
+            option_c: optC,
+            option_d: optD,
+            correct_option: correct,
+            marks: 1
         });
-
-        // 4. Insert the new question form into the container
-        container.appendChild(newQuestionBox);
-        newQuestionBox.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // Function for Save All Questions & Finish (Backend Logic Placeholder)
-    function saveAndFinish() {
-        // NOTE: In a real application, you would use JavaScript here to:
-        // 1. Gather all data from the dynamically created forms.
-        // 2. Format the data into a JSON object.
-        // 3. Use the fetch() API to send this data to your backend server.
-        
-        alert(`Successfully submitted ${questionCount} questions for creation! This alert simulates the final backend submission.`);
-        
-        // After successful submission, you would typically redirect the user:
-        // window.location.href = 'conduct_exam.html'; 
-    }
+    const examData = {
+        exam_title: examTitle,
+        subject: subject,
+        total_questions: questionCount,
+        questions: questions
+    };
+
+    console.log('Exam JSON Data:', examData);
+    alert(`Successfully collected ${questionCount} questions! Check console for JSON format.`);
+}
 </script>
 
 </body>
