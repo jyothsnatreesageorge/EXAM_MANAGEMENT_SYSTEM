@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Exam Instructions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    margin:0;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .instruction-container {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+  }
+
+  h2 {
+    margin-top: 0;
+    color: #111;
+  }
+
+  .num-questions {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 15px 0;
+    color: #1e1e1e;
+  }
+
+  .instructions {
+    text-align: left;
+    margin: 20px 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+  }
+
+  .declaration {
+    margin: 20px 0;
+    font-size: 16px;
+  }
+
+  .declaration input {
+    margin-right: 8px;
+  }
+
+  button {
+    padding: 12px 20px;
+    background-color: #1e1e1e;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: opacity 0.2s;
+  }
+
+  button:hover {
+    opacity: 0.85;
+  }
+
+  button:disabled {
+    background-color: #888;
+    cursor: not-allowed;
+  }
+</style>
+</head>
+<body>
+
+<div class="instruction-container">
+  <h2>Exam Instructions</h2>
+  <div class="num-questions" id="numQuestions">
+    Number of Questions: 0
+  </div>
+
+  <div class="instructions">
+    <ol>
+      <li>Read each question carefully.</li>
+      <li>Do not refresh the page during the exam.</li>
+      <li>Ensure a stable internet connection.</li>
+      <li>Time allotted for the exam will be displayed at the top.</li>
+      <li>Once submitted, answers cannot be changed.</li>
+    </ol>
+  </div>
+
+  <div class="declaration">
+    <input type="checkbox" id="agreeCheckbox">
+    I hereby declare that I will not indulge in any malpractice during the exam.<br>
+    I am ready to begin the exam.
+  </div>
+
+  <button id="startExamBtn" disabled onclick="startExam()">Start Exam</button>
+</div>
+
+<script>
+  // Example: Fetch number of questions from database or paper settings
+  const totalQuestions = 20; // Replace with dynamic value from backend
+  document.getElementById('numQuestions').innerText = `Number of Questions: ${totalQuestions}`;
+
+  // Enable start button only when checkbox is checked
+  const checkbox = document.getElementById('agreeCheckbox');
+  const startBtn = document.getElementById('startExamBtn');
+
+  checkbox.addEventListener('change', () => {
+    startBtn.disabled = !checkbox.checked;
+  });
+
+  function startExam() {
+    // Redirect to exam page
+    window.location.href = 'questions.html';
+  }
+</script>
+
+</body>
+</html>
