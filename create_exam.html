@@ -8,52 +8,25 @@
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #e8eef3; /* Dashboard background color */
+      background: #e8eef3;
       min-height: 100vh;
     }
     .navbar {
-      background: linear-gradient(90deg, #34495e 0%, #2c3e50 100%); /* Dark gradient for navbar */
+      background: linear-gradient(90deg, #34495e 0%, #2c3e50 100%);
       color: white;
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
-    .navbar h4 {
-      color: white !important;
-      font-weight: 600;
-    }
-    .btn-light {
-      color: #ecf0f1;
-      background-color: #5d6d7e;
-      border-color: #5d6d7e;
-    }
-    .btn-light:hover {
-      color: #fff;
-      background-color: #798d9f;
-      border-color: #798d9f;
-    }
-    .card {
-      border-radius: 15px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
-      border: none;
-    }
-    .btn-danger {
-      background-color: #e74c3c;
-      border-color: #e74c3c;
-      font-weight: 600;
-      padding: 10px 30px;
-      border-radius: 8px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .btn-danger:hover {
-      background-color: #c0392b;
-      border-color: #c0392b;
-    }
-    .form-control, .form-label {
-        font-size: 14px;
-    }
+    .navbar h4 { color: white !important; font-weight: 600; }
+    .btn-light { color: #ecf0f1; background-color: #5d6d7e; border-color: #5d6d7e; }
+    .btn-light:hover { color: #fff; background-color: #798d9f; border-color: #798d9f; }
+    .card { border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); border: none; }
+    .btn-danger { background-color: #e74c3c; border-color: #e74c3c; font-weight: 600; padding: 10px 30px; border-radius: 8px; text-transform: uppercase; letter-spacing: 1px; }
+    .btn-danger:hover { background-color: #c0392b; border-color: #c0392b; }
+    .form-control, .form-label { font-size: 14px; }
   </style>
 </head>
 <body>
+
   <nav class="navbar shadow-sm mb-4">
     <div class="container-fluid">
       <h4 class="m-0">Create Exam</h4>
@@ -67,21 +40,43 @@
       <form>
         <div class="mb-3">
           <label class="form-label">Exam Title</label>
-          <input type="text" class="form-control" placeholder="Enter exam name">
+          <input type="text" class="form-control" placeholder="Enter exam name" id="exam_title">
         </div>
         <div class="mb-3">
           <label class="form-label">Subject</label>
-          <input type="text" class="form-control" placeholder="Enter subject">
+          <input type="text" class="form-control" placeholder="Enter subject" id="subject">
         </div>
         <div class="mb-3">
           <label class="form-label">Date & Time</label>
-          <input type="datetime-local" class="form-control">
+          <input type="datetime-local" class="form-control" id="exam_datetime">
         </div>
-        <button type="button" class="btn btn-danger" onclick="window.location.href='create_mcq_questions.html'">
+        <div class="mb-3">
+          <label class="form-label">Number of Questions</label>
+          <input type="number" class="form-control" placeholder="Enter total number of questions" id="total_questions" min="1">
+        </div>
+        <button type="button" class="btn btn-danger" onclick="goToQuestions()">
           Create & Add Questions
         </button>
       </form>
     </div>
   </div>
+
+  <script>
+    function goToQuestions() {
+      const examTitle = document.getElementById('exam_title').value.trim();
+      const subject = document.getElementById('subject').value.trim();
+      const examDateTime = document.getElementById('exam_datetime').value;
+      const totalQuestions = document.getElementById('total_questions').value;
+
+      if (!examTitle || !subject || !examDateTime || !totalQuestions) {
+          alert('Please fill in all fields!');
+          return;
+      }
+
+      const url = `create_mcq_questions.html?exam_title=${encodeURIComponent(examTitle)}&subject=${encodeURIComponent(subject)}&datetime=${encodeURIComponent(examDateTime)}&total_questions=${totalQuestions}`;
+      window.location.href = url;
+    }
+  </script>
+
 </body>
 </html>
