@@ -1,0 +1,134 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+}
+
+/* Slim left icon bar */
+#profile-icon-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 55px;
+  height: 100vh;
+  background-color: #212529;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  padding-top: 20px;
+  gap: 20px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+#profile-icon-bar .menu-icon i {
+  font-size: 20px;
+}
+
+#profile-icon-bar .profile-icon i {
+  font-size: 24px;
+  margin-top: 10px;
+}
+
+/* Profile panel */
+#profile-panel {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background-color: #212529;
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+  transition: left 0.3s ease;
+  z-index: 999;
+}
+
+#profile-panel.open {
+  left: 55px;
+}
+
+#profile-panel img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: block;
+  margin: 0 auto 10px auto;
+}
+
+#profile-panel h5,
+#profile-panel small {
+  text-align: left;
+  margin: 5px 0;
+  padding-left: 10px;
+}
+
+#profile-panel .info {
+  margin-top: 20px;
+  padding-left: 10px;
+}
+
+#profile-panel .info p {
+  margin: 8px 0;
+}
+
+/* Navbar */
+.navbar {
+  background: #4a90e2;
+  color: white;
+  position: fixed; 
+  top: 0;
+  left: 55px;
+  width: calc(100% - 55px);
+  z-index: 998; 
+  transition: left 0.3s ease, width 0.3s ease;
+}
+
+.navbar.shifted {
+  left: 305px;
+  width: calc(100% - 305px);
+}
+
+.navbar h4 {
+  color: white;
+  margin-left: 10px;
+}
+
+/* Main content */
+#content {
+  margin-left: 55px;
+  padding: 20px;
+  transition: margin-left 0.3s ease;
+  padding-top: 80px;
+}
+
+#content.shifted {
+  margin-left: 305px;
+}
+
+/* Cards */
+.card-action {
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: none;
+  color: #212529;
+  border-radius: 12px;
+}
+
+.card-action:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+/* Card colors */
+.card-create { background: #ffe0e6; }
+.card-conduct { background: #e0ffe6; }
+.card-results { background: #e0f0ff; }
+.card-publish { background: #fff4e0; }  /* soft yellow */
+.card-analysis { background: #e0f7ff; }  /* soft cyan */
+
+/* Buttons inside cards */
+.card-action .btn { font-weight: 500; }
