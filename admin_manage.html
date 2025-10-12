@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage - Exam Management System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg-dark: #1e1e1e;
+      --sidebar-bg: #2a2a2a;
+      --text-light: #f5f5f5;
+      --card-bg: #ffffff;
+      --accent-color: #ff5722;
+      --sidebar-width: 250px;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      background-color: #f4f4f4;
+      color: var(--text-light);
+      overflow-x: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      padding: 10px 20px;
+      position: relative;
+      z-index: 1000;
+    }
+
+    .navbar-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .hamburger {
+      cursor: pointer;
+      font-size: 24px;
+      margin-right: 15px;
+      user-select: none;
+    }
+
+    .navbar-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .admin-badge {
+      background-color: var(--accent-color);
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      margin-left: 10px;
+      font-weight: bold;
+    }
+
+    .back-btn {
+      background-color: transparent;
+      border: 2px solid white;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+      transition: all 0.2s;
+    }
+
+    .back-btn:hover {
+      background-color: white;
+      color: var(--bg-dark);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      height: 100%;
+      width: var(--sidebar-width);
+      background-color: var(--sidebar-bg);
+      color: var(--text-light);
+      transition: left 0.3s ease;
+      padding: 20px;
+      padding-top: 80px;
+      box-sizing: border-box;
+      z-index: 999;
+      overflow-y: auto;
+    }
+
+    .sidebar.open {
+      left: 0;
+    }
+
+    .sidebar img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: block;
+      margin: 0 auto 15px;
+      border: 3px solid var(--accent-color);
+    }
+
+    .sidebar .admin-name,
+    .sidebar .admin-contact {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .sidebar .admin-name {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .sidebar hr {
+      border: none;
+      border-top: 1px solid #444;
+      margin: 20px 0;
+    }
+
+
+    /* Main Content */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: calc(100vh - 60px);
+      padding: 40px 30px;
+      transition: margin-left 0.3s ease;
+    }
+
+    body.sidebar-open .main-content {
+      margin-left: var(--sidebar-width);
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .page-header h2 {
+      color: #333;
+      font-size: 32px;
+      margin: 0 0 10px 0;
+    }
+
+    .page-header p {
+      color: #666;
+      font-size: 16px;
+      margin: 0;
+    }
+
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      color: #333;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      padding: 40px 30px;
+      border-radius: 12px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .card-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+    }
+
+    .card h3 {
+      margin: 0 0 15px 0;
+      font-size: 24px;
+      color: #111;
+    }
+
+    .card p {
+      font-size: 14px;
+      margin: 0 0 25px 0;
+      color: #666;
+      line-height: 1.6;
+    }
+
+    .card button {
+      border: none;
+      padding: 12px 30px;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      color: white;
+      background-color: var(--bg-dark);
+      transition: opacity 0.2s;
+      width: 100%;
+      font-weight: bold;
+    }
+
+    .card button:hover {
+      opacity: 0.85;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 20px;
+      }
+
+      .cards-container {
+        grid-template-columns: 1fr;
+      }
+
+      body.sidebar-open .main-content {
+        margin-left: 0;
+      }
+
+      .action-buttons {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="navbar-left">
+      <div class="hamburger" onclick="toggleSidebar()">&#9776;</div>
+      <div class="navbar-title">Manage</div>
+      <span class="admin-badge">ADMIN</span>
+    </div>
+    <button class="back-btn" onclick="goBack()">← Back to Dashboard</button>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <img src="user.jpg" alt="Admin Photo">
+    <div class="admin-name">Administrator</div>
+    <div class="admin-contact">admin@example.com</div>
+    <hr>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="page-header">
+      <h2>⚙️ Manage System</h2>
+      <p>Manage teachers, students, classes, and subjects</p>
+    </div>
+
+    <div class="cards-container">
+      <!-- Manage Teachers -->
+      <div class="card" onclick="goTo('manage_teachers.html')">
+        <div class="card-icon">👨‍🏫</div>
+        <h3>Manage Teachers</h3>
+        <p>Add, edit, or remove teacher profiles and assign subjects to them.</p>
+        <button>Manage Teachers</button>
+      </div>
+
+      <!-- Manage Students -->
+      <div class="card" onclick="goTo('manage_students.html')">
+        <div class="card-icon">👨‍🎓</div>
+        <h3>Manage Students</h3>
+        <p>Add, edit, or remove student profiles and manage their enrollments.</p>
+        <button>Manage Students</button>
+      </div>
+
+      <!-- Manage Classes -->
+      <div class="card" onclick="goTo('manage_classes.html')">
+        <div class="card-icon">🏫</div>
+        <h3>Manage Classes</h3>
+        <p>Create and manage classes, assign class teachers, and set capacities.</p>
+        <button>Manage Classes</button>
+      </div>
+
+      <!-- Manage Subjects -->
+      <div class="card" onclick="goTo('manage_subjects.html')">
+        <div class="card-icon">📚</div>
+        <h3>Manage Subjects</h3>
+        <p>Add, edit subjects and link them to classes and teachers.</p>
+        <button>Manage Subjects</button>
+      </div>
+    </div>
+
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('open');
+      document.body.classList.toggle('sidebar-open');
+    }
+
+    function goTo(page) {
+      window.location.href = page;
+    }
+
+    function goBack() {
+      window.location.href = 'admin_main.html';
+    }
+
+  </script>
+
+</body>
+
+</html>
